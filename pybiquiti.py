@@ -21,35 +21,35 @@ config_file = "WRITE HERE YOUR CONFIG FILE .TXT"
 if __name__ == "__main__":
     
     
-        # Open and read config file and parse it to array
-        read_file = open (config_file,"r")
-        config_ant = read_file.readlines()
-        
-        print("Write the PPPoE secret")
-        secret=input()
+    # Open and read config file and parse it to array
+    read_file = open (config_file,"r")
+    config_ant = read_file.readlines()
 
-        print("Write your SSID repeater")
-        repeater = input()
+    print("Write the PPPoE secret")
+    secret=input()
 
-        print("Write your device name")
-        device_name = input()
+    print("Write your SSID repeater")
+    repeater = input()
 
-        # Modify array with input names
-        config_ant[120] = "ppp.1.name="+secret+"\n"
-        config_ant[164] = "resolv.host.1.name="+device_name+"\n"
-        config_ant[178] = "wpasupplicant.profile.1.network.1.ssid="+repeater+"\n"
-        config_ant[193] = "wireless.1.ssid="+repeater+"\n"
+    print("Write your device name")
+    device_name = input()
 
-        # Create and write new file with new parameters
-        new_file = open("system.cfg", "w")
-        new_file.writelines(config_ant)
-        
-        # Close files
-        new_file.close()
-        read_file.close()
+    # Modify array with input names
+    config_ant[120] = "ppp.1.name="+secret+"\n"
+    config_ant[164] = "resolv.host.1.name="+device_name+"\n"
+    config_ant[178] = "wpasupplicant.profile.1.network.1.ssid="+repeater+"\n"
+    config_ant[193] = "wireless.1.ssid="+repeater+"\n"
 
-        # Send file via console with SCP
-        subprocess.run('scp .\system.cfg ubnt@192.168.1.20:/tmp/', shell=True)
+    # Create and write new file with new parameters
+    new_file = open("system.cfg", "w")
+    new_file.writelines(config_ant)
+
+    # Close files
+    new_file.close()
+    read_file.close()
+
+    # Send file via console with SCP
+    subprocess.run('scp .\system.cfg ubnt@192.168.1.20:/tmp/', shell=True)
 
     try:
         # Start Paramiko connection
