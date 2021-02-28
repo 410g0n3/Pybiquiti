@@ -10,11 +10,14 @@ import subprocess
 import os
 from getpass import getpass
 from io import open
+import argparse
 
 # Arguments to ssh connection
-HOST = sys.argv[1]
-PORT = sys.argv[2]
-USER = sys.argv[3]
+parse = argparse.ArgumentParser()
+parse.add_argument("-H", "--host", help="IP del dispositivo a conectar")
+parse.add_argument("-p", "--port", help="Puerto del dispositivo a conectar")
+parse.add_argument("-u", "--user", help="Username para el inicio de sesión")
+parse = parse.parse_args()
 
 config_file = "WRITE HERE YOUR CONFIG FILE .TXT"
 
@@ -56,7 +59,7 @@ if __name__ == "__main__":
         client = paramiko.SSHClient()
         client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
         PASS = getpass('ubnt@192.168.1.20 password: ')
-        client.connect(hostname=HOST, port=PORT, username=USER, password=PASS)
+        client.connect(hostname=parse.host, port=parse.port, username=parse.user, password=PASS)
         
         # Execute save and reboot comand
         stdin, stdout, stderr = client.exec_command("cfgmtd -w -p /etc/ && reboot")
